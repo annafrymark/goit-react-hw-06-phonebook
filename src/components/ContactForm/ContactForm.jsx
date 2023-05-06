@@ -1,31 +1,38 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
 import css from './contactForm.module.css';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 
-const ContactForm = ({ contacts, addNewContact }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
-  const handleChangeName = event => {
-    setName(event.target.value);
-  };
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
 
-  const handleChangeNumber = event => {
-    setNumber(event.target.value);
-  };
+  // const handleChangeName = event => {
+  //   setName(event.target.value);
+  // };
 
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
+  // const handleChangeNumber = event => {
+  //   setNumber(event.target.value);
+  // };
+
+  // const reset = () => {
+  //   setName('');
+  //   setNumber('');
+  // };
 
   const handleSubmit = event => {
     event.preventDefault();
+    const form = event.target;
     const newContact = {
-      id: nanoid(),
-      name,
-      number,
+      // id: nanoid(),
+      name: form.name.value,
+      number: form.number.value,
     };
 
     let contactExist = false;
@@ -38,10 +45,10 @@ const ContactForm = ({ contacts, addNewContact }) => {
     });
 
     if (!contactExist) {
-      addNewContact(newContact);
+      dispatch(addContact(newContact));
     }
 
-    reset();
+    form.reset();
   };
 
   const nameInputId = nanoid();
@@ -50,8 +57,6 @@ const ContactForm = ({ contacts, addNewContact }) => {
     <form onSubmit={handleSubmit} className={css.contactForm}>
       <label htmlFor={nameInputId}>Name</label>
       <input
-        value={name}
-        onChange={handleChangeName}
         id={nameInputId}
         type="text"
         name="name"
@@ -61,8 +66,6 @@ const ContactForm = ({ contacts, addNewContact }) => {
       />
       <label htmlFor="number">Number</label>
       <input
-        value={number}
-        onChange={handleChangeNumber}
         type="tel"
         name="number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"

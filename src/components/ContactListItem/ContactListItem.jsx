@@ -1,9 +1,13 @@
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
 import css from './contactListItem.module.css';
 import PropTypes from 'prop-types';
 
-const ContactListItem = ({ contact, deleteContact }) => {
-  const handleOnClick = event => {
-    deleteContact(contact.id);
+const ContactListItem = ({ contact }) => {
+  const dispatch = useDispatch();
+
+  const handleOnClick = () => {
+    dispatch(deleteContact(contact.id));
   };
 
   return (

@@ -9,7 +9,6 @@ const Filter = () => {
   const filterId = nanoid();
 
   const handleChange = event => {
-    // dispatch(setFilter(event.target.value));
     dispatch(setFilter(event.currentTarget.value));
   };
 
@@ -21,7 +20,6 @@ const Filter = () => {
           className={css.inputFilter}
           id={filterId}
           type="search"
-          // value={filterValue}
           onChange={handleChange}
         />
       </label>
